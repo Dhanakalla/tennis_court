@@ -110,24 +110,28 @@ class BookingForm(forms.ModelForm):
             booking.save()
         return booking
 
-from django import forms
+# from django import forms
+# from django.contrib.auth.forms import UserCreationForm
+# from django.contrib.auth.models import User
+# User = get_user_model()
+# class UserRegisterForm(UserCreationForm):
+#     email = forms.EmailField(required=True)
+#
+#     class Meta:
+#         model = User
+#         fields = ["username", "email", "password1", "password2"]
+
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class UserRegisterForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-
     class Meta:
         model = User
-        # fields = ['first_name', 'last_name', 'email', 'phone_number', 'role']
-        fields = ["username", "email", "password1", "password2"]
+        fields = ["email", "phone_number", "password1", "password2"]
 
-#
-# from django import forms
-#
-# class ExportMembersForm(forms.Form):
-#     from_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=True)
-#     to_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=True)
+
 
 from django import forms
 

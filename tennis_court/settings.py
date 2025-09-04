@@ -27,7 +27,7 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = ["tennis-court-6.onrender.com", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
 
 
 
@@ -91,13 +91,16 @@ WSGI_APPLICATION = 'tennis_court.wsgi.application'
 # }
 
 
+import dj_database_url
+
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3'),
+        default=os.getenv("postgresql://tennis_court_db_443h_user:cTMywXQz08wso5UsU5IWjMfSWFGKbhkw@dpg-d2sk3h63jp1c73atm8qg-a.oregon-postgres.render.com/tennis_court_db_443h"),  # Render’s external DB URL
         conn_max_age=600,
         ssl_require=True
     )
 }
+
 
 
 # Password validation
@@ -140,7 +143,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'core.User'
+AUTH_USER_MODEL ="core.User"
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/user/dashboard/'  # Where to go after login

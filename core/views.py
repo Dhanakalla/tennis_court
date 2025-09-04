@@ -36,6 +36,8 @@ def admin_required(view_func):
 # -----------------------
 # Authentication Views
 # -----------------------
+User = get_user_model()
+
 def register_view(request):
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
