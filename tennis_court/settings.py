@@ -26,11 +26,8 @@ SECRET_KEY = 'django-insecure-pte8)=dztx=0oynw76f)^w9g%6ft*9fxmogubi1rej7j==*d4l
 DEBUG = True
 
 
-ALLOWED_HOSTS = [
-    h.strip()
-    for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
-    if h.strip()
-]
+
+ALLOWED_HOSTS = ["tennis-court-6.onrender.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
