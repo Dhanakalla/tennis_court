@@ -1,0 +1,24 @@
+<!-- templates/bulk_create_slots.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Bulk Create Court Slots</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.court.label_tag }} {{ form.court }}
+        </div>
+        <div class="mb-3">
+            {{ form.start_date.label_tag }} {{ form.start_date }}
+        </div>
+        <div class="mb-3">
+            {{ form.end_date.label_tag }} {{ form.end_date }}
+        </div>
+        <div class="mb-3">
+            <label>Select Slots</label>
+            {{ form.slots }}
+        </div>
+        <button type="submit" class="btn btn-primary">Generate Slots</button>
+    </form>
+</div>
+{% endblock %}

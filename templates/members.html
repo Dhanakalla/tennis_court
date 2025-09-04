@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Members{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Members Page</h2>
+  <p>Select an action below:</p>
+  <a href="{% url 'add_member' %}" class="btn btn-primary">Add Member</a>
+  <a href="{% url 'view_members' %}" class="btn btn-success">View Members</a>
+</div>
+{% endblock %}
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Members</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Members Page</h1>-->
+<!--<a href="{% url 'add_member' %}">➕ Add Member</a><br>-->
+<!--<a href="{% url 'view_members' %}">👀 View Members</a>-->
+
+<!--&lt;!&ndash;  <h1>Members Page</h1>&ndash;&gt;-->
+<!--&lt;!&ndash;  <p>This is where members list/info will go.</p>&ndash;&gt;-->
+<!--</body>-->
+<!--</html>-->
+
+

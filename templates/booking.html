@@ -1,0 +1,27 @@
+
+
+<!--<form method="post" action="{% url 'book_court' %}"-->
+<!--      onsubmit="return confirm('Do you want to confirm this court booking?');">-->
+<!--    {% csrf_token %}-->
+<!--    <button type="submit">Book Court</button>-->
+<!--</form>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking History</title>
+</head>
+<body>
+    <h1>Your Bookings</h1>
+    <!-- your booking list here -->
+
+    <!-- ✅ Popup message block -->
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+            alert("{{ message }}");
+        {% endfor %}
+    </script>
+    {% endif %}
+</body>
+</html>

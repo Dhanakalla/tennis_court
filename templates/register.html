@@ -1,0 +1,82 @@
+{#<h2>Register</h2>#}
+{#<form method="post">#}
+{#    {% csrf_token %}#}
+{#    {{ form.as_p }}#}
+{#    <button type="submit">Sign Up</button>#}
+{#</form>#}
+{#<a href="{% url 'login' %}">Already have an account? Login</a>#}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Register - Tennis Court Booking</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#111827; --muted:#6b7280; --line:#e5e7eb;
+      --primary:#ef4444;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--fg)}
+    .container{max-width:400px;margin:60px auto;padding:24px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+    h1{text-align:center;font-size:28px;margin-bottom:8px}
+    p{text-align:center;color:var(--muted);margin-bottom:24px}
+    label{display:block;font-weight:600;margin-bottom:6px}
+    input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;margin-bottom:16px;font-size:15px}
+    button{width:100%;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer}
+    button:hover{background:#dc2626}
+    .errorlist{color:#dc2626;margin-bottom:12px;font-size:14px;list-style:none;padding:0}
+    .links{text-align:center;margin-top:12px}
+    .links a{color:var(--primary);text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Create Account</h1>
+    <p>Sign up to start booking tennis court slots</p>
+
+    <form method="post" action="">
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <ul class="errorlist">
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% for field in form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+          <ul class="errorlist">
+            {% for error in field.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endfor %}
+
+      <button type="submit">Register</button>
+    </form>
+
+    <div class="links">
+      <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+    </div>
+  </div>
+
+  <script>
+    // Add placeholders dynamically if not present
+    document.querySelectorAll("input").forEach(input => {
+      if(!input.placeholder){
+        if(input.name === "username") input.placeholder = "Choose a username";
+        if(input.name === "password1") input.placeholder = "Create a password";
+        if(input.name === "password2") input.placeholder = "Confirm password";
+        if(input.name === "email") input.placeholder = "Enter your email";
+      }
+    });
+  </script>
+</body>
+</html>

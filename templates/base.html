@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Court Booking Admin</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background: #212529;
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            font-size: 15px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 3px 0;
+        }
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background: #0d6efd;
+            color: #fff !important;
+        }
+        .sidebar h4 {
+            font-size: 18px;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 25px;
+        }
+        .navbar {
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="sidebar p-3 position-fixed">
+        <h4 class="text-white">🎾 Tennis Court Admin</h4>
+        <hr class="text-secondary">
+        <ul class="nav flex-column">
+
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+            </li>
+
+            <!-- Members -->
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#membersMenu" role="button">
+                    <i class="bi bi-people"></i> Members
+                </a>
+                <div class="collapse" id="membersMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li><a href="{% url 'core:add_member' %}" class="nav-link">➕ Add Member</a></li>
+                        <li><a href="{% url 'core:view_members' %}" class="nav-link">📋 View Members</a></li>
+                        <li><a href="{% url 'core:import_members' %}" class="nav-link">⬇ Import Members</a></li>
+                        <li><a href="{% url 'core:export_members' %}" class="nav-link">⬆ Export Members</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- Courts -->
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#courtsMenu" role="button">
+                    <i class="bi bi-grid-1x2"></i> Courts
+                </a>
+                <div class="collapse" id="courtsMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li><a href="{% url 'core:add_court' %}" class="nav-link">➕ Add Court</a></li>
+                        <li><a href="{% url 'core:add_court_slot' %}" class="nav-link">➕ Add Court Slots</a></li>
+                        <li><a href="{% url 'core:bulk_create_slots' %}" class="nav-link">🗓️ Bulk Create Slots</a></li>
+                        <li><a href="{% url 'core:view_court_slots' %}" class="nav-link">📋 View Courts</a></li>
+                    </ul>
+                </div>
+            </li>
+
+
+
+
+            <!-- Bookings -->
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#bookingsMenu" role="button">
+                    <i class="bi bi-calendar-check"></i> Bookings
+                </a>
+                <div class="collapse" id="bookingsMenu">
+                    <ul class="nav flex-column ms-3">
+<!--                        <li><a href="{% url 'core:book_court' %}" class="nav-link">📝 Book Slot</a></li>-->
+                        <li><a href="{% url 'core:booking_history' %}" class="nav-link">📖 Booking History</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content flex-grow-1">
+        <!-- Top Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4 px-3">
+            <div class="container-fluid">
+                <span class="navbar-brand fw-semibold">Admin Dashboard</span>
+                <div class="d-flex align-items-center">
+                    <span class="me-3"><i class="bi bi-person-circle"></i> {{ request.user.email }}</span>
+                    <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-danger">Logout</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dynamic Page Content -->
+        {% block content %}
+        <h3>Welcome, Admin 👋</h3>
+        <p>Select a menu item from the sidebar to get started.</p>
+        {% endblock %}
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

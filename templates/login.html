@@ -1,0 +1,66 @@
+{% load static %}
+<!--<!DOCTYPE html>-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - Tennis Court Booking</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#111827; --muted:#6b7280; --line:#e5e7eb;
+      --primary:#ef4444;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--fg)}
+    .container{max-width:400px;margin:80px auto;padding:24px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+    h1{text-align:center;font-size:28px;margin-bottom:8px}
+    p{text-align:center;color:var(--muted);margin-bottom:24px}
+    label{display:block;font-weight:600;margin-bottom:6px}
+    input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;margin-bottom:16px;font-size:15px;background:white}
+    button{width:100%;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer}
+    button:hover{background:#dc2626}
+    .errorlist, .messages{color:#dc2626;margin-bottom:12px;font-size:14px;list-style:none;padding:0}
+    .form-check{display:flex;align-items:center;margin-bottom:16px}
+    .form-check input{margin-right:8px}
+    .links{text-align:center;margin-top:12px}
+    .links a{color:var(--primary);text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome Back</h1>
+    <p>Login to book your tennis court slots</p>
+
+    <form method="post" action="">
+      {% csrf_token %}
+
+      <!-- Django messages -->
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <label for="id_username">Email or Username</label>
+      <input type="text" name="username" id="id_username" placeholder="Enter your email or username" required>
+
+      <label for="id_password">Password</label>
+      <input type="password" name="password" id="id_password" placeholder="Enter your password" required>
+
+     <div style="display: flex; align-items: center; gap: 6px; margin: 10px 0;">
+  <input id="remember_me" name="remember_me" type="checkbox" style="width:16px; height:16px;">
+  <label for="remember_me" style="margin:0; cursor:pointer;">Remember Me</label>
+</div>
+
+      <button type="submit">Log In</button>
+    </form>
+
+    <div class="links">
+      <p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Members List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fafafa;
+        }
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+        th {
+            background: #f4f4f4;
+            font-weight: bold;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+        }
+        /* Hover effect */
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        /* Alternate row color */
+        tr:nth-child(even) {
+            background-color: #fdfdfd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Members ({{ members.count }})</h1>
+
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <th>Added By</th>
+            <th>Date Joined</th>
+        </tr>
+        {% for member in members %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>
+                {% if member.first_name %}
+                    {{ member.first_name }} {% if member.last_name %}{{ member.last_name }}{% endif %}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td>{{ member.email|default:"-" }}</td>
+            <td>{{ member.phone_number|default:"-" }}</td>
+            <td>{{ member.role|default:"Regular" }}</td>
+            <td>
+                {% if member.added_by %}
+                    {% if member.added_by.is_staff %}
+                        Admin
+                    {% else %}
+                        {{ member.added_by.username }}
+                    {% endif %}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td>
+                {% if member.created_at %}
+                    {{ member.created_at|date:"Y-m-d" }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7" style="text-align:center;">No members found</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

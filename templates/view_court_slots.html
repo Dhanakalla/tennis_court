@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>View Court Slots</h1>
+
+<!-- Popup messages -->
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  {% endfor %}
+{% endif %}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Court</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for slot in slots %}
+        <tr>
+            <td>{{ slot.court }}</td>
+            <td>{{ slot.date }}</td>
+            <td>{{ slot.start_time }}</td>
+            <td>{{ slot.end_time }}</td>
+            <td>
+                {% if slot.is_booked %}
+                    <span class="badge bg-primary">Booked</span>
+                {% elif slot.is_blocked %}
+                    <span class="badge bg-danger">Blocked</span>
+                {% else %}
+                    <span class="badge bg-success">Available</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if slot.is_booked %}
+                    <em>No action</em>
+                {% elif slot.is_blocked %}
+                    <form method="post" action="{% url 'core:view_court_slots' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="slot_id" value="{{ slot.id }}">
+                        <button type="submit" name="action" value="unblock" class="btn btn-success btn-sm">Unblock</button>
+                    </form>
+                {% else %}
+                    <form method="post" action="{% url 'core:view_court_slots' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="slot_id" value="{{ slot.id }}">
+                        <button type="submit" name="action" value="block" class="btn btn-danger btn-sm">Block</button>
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
