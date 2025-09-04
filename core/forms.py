@@ -129,7 +129,7 @@ User = get_user_model()
 class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ["email", "phone_number", "password1", "password2"]
+        fields = ["username","email", "password1", "password2"]
 
 
 

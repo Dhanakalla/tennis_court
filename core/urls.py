@@ -35,7 +35,6 @@ urlpatterns = [
     # ------------------------
     path("book/court/", views.book_court, name="book_court"),
     path('booking/history/', views.booking_history, name='booking_history'),
-    # path("booking/history/", views.booking_history, name="booking_history"),  # ✅ Added
 
     # ------------------------
     # Members (User side)
@@ -52,4 +51,8 @@ urlpatterns = [
     path("admin/members/export/", views.export_members, name="export_members"),
     path("admin/members/edit/<int:member_id>/", views.edit_member, name="edit_member"),
     path("admin/members/delete/<int:member_id>/", views.delete_member, name="delete_member"),
+
+
+
+
 ]

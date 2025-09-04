@@ -9,6 +9,12 @@ from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import CourtSlot, Booking
+from django.core.mail import send_mail
+from django.shortcuts import redirect
+from django.conf import settings
+from django.urls import reverse
+from .models import User
+
 
 from .forms import (
     UserRegisterForm,
@@ -227,7 +233,8 @@ from .models import User
 # Show all members
 @login_required
 def view_members(request):
-    members = Member.objects.filter(added_by=request.user).order_by("-id")
+    # members = Member.objects.filter(added_by=request.user).order_by("-id")
+    members = Member.objects.all()
     return render(request, "members/view_members.html", {"members": members})
 
 # Add member (user-facing)
@@ -290,11 +297,11 @@ def import_excel(request):
                     first_name=row.get("first_name", "").strip(),
                     last_name=row.get("last_name", "").strip(),
                     email=row.get("email", "").strip(),
-                    phone_number=row.get("phone_number", "").strip(),
+                    phone_number=str(row.get("phone_number", "")).strip(),
                     added_by=admin_user,
                 )
             messages.success(request, "Members imported successfully!")
-            return redirect("view_members")
+            return redirect("core:view_members")
     else:
         form = UploadExcelForm()
 
