@@ -6,11 +6,22 @@ from django.utils import timezone
 from django.conf import settings
 from django.contrib.sessions.models import Session
 from datetime import datetime, date, timedelta, time
-
+import random
 
 # -------------------
 # Custom User Model
 # -----------------
+# class User(AbstractUser):
+#     ROLE_CHOICES = [
+#         ('admin', 'Admin'),
+#         ('user', 'User'),
+#     ]
+#     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')
+#     phone_number = models.CharField(max_length=20, blank=True, null=True)
+#     email_verified = models.BooleanField(default=False)
+#
+#     def is_admin(self):
+#         return self.role == 'admin'
 class User(AbstractUser):
     ROLE_CHOICES = [
         ('admin', 'Admin'),
@@ -20,9 +31,20 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     email_verified = models.BooleanField(default=False)
 
+    # 🔑 For OTP verification
+    otp = models.CharField(max_length=6, blank=True, null=True)
+    otp_created_at = models.DateTimeField(blank=True, null=True)
+
     def is_admin(self):
         return self.role == 'admin'
 
+    def generate_otp(self):
+        """Generate a 6-digit OTP and save it with timestamp"""
+        otp = str(random.randint(100000, 999999))  # 6-digit random number
+        self.otp = otp
+        self.otp_created_at = timezone.now()
+        self.save()
+        return otp
 
 # -------------------
 # Court Model

@@ -52,7 +52,8 @@ urlpatterns = [
     path("admin/members/edit/<int:member_id>/", views.edit_member, name="edit_member"),
     path("admin/members/delete/<int:member_id>/", views.delete_member, name="delete_member"),
 
+    # path("verify-otp/", views.verify_otp, name="verify_otp"),
+    path("resend-otp/", views.resend_otp, name="resend_otp"),
 
-
-
+    path("verify-otp/", views.verify_otp_view, name="verify_otp"),
 ]

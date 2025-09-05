@@ -34,7 +34,7 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
 
 # ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
-
+# ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.auth',
@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'tennis_court.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-#
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -196,3 +196,15 @@ SESSION_COOKIE_SECURE = False             # True only on HTTPS
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
 
+
+# settings.py
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+# settings.py
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "dhananaidu11111@gmail.com"
+EMAIL_HOST_PASSWORD = "kygx bawv fujt hxtz"  # Not your real Gmail password, but an App Password

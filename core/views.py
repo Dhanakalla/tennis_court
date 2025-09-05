@@ -42,20 +42,173 @@ def admin_required(view_func):
 # -----------------------
 # Authentication Views
 # -----------------------
+# User = get_user_model()
+#
+# def register_view(request):
+#     if request.method == "POST":
+#         form = UserRegisterForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)  # Auto-login after register
+#             return redirect("dashboard")
+#     else:
+#         form = UserRegisterForm()
+#     return render(request, "register.html", {"form": form})
+
+# core/views.py
+# from django.core.mail import send_mail
+# from django.utils import timezone
+# from django.shortcuts import render, redirect
+# from django.contrib import messages
+# from django.contrib.auth import get_user_model
+#
+# User = get_user_model()
+#
+# def register_view(request):
+#     if request.method == "POST":
+#         username = request.POST.get("username")
+#         email = request.POST.get("email")
+#         password = request.POST.get("password")
+#
+#         if User.objects.filter(email=email).exists():
+#             messages.error(request, "Email already registered.")
+#             return redirect("register")
+#
+#         user = User.objects.create_user(username=username, email=email, password=password, is_active=False)
+#         otp = user.generate_otp()
+#
+#         # Send email with OTP
+#         send_mail(
+#             subject="Verify your Tennis Court account",
+#             message=f"Your verification OTP is {otp}. It is valid for 10 minutes.",
+#             from_email="no-reply@tenniscourt.com",
+#             recipient_list=[email],
+#         )
+#
+#         messages.success(request, "✅ OTP sent to your email. Please verify.")
+#         request.session["pending_user"] = user.id  # store temporarily
+#         return redirect("verify_otp")
+#
+#     return render(request, "register.html")
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.core.mail import send_mail
+from django.contrib.auth import get_user_model
+from .forms import RegisterForm
+
 User = get_user_model()
 
 def register_view(request):
     if request.method == "POST":
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  # Auto-login after register
-            return redirect("dashboard")
-    else:
-        form = UserRegisterForm()
-    return render(request, "register.html", {"form": form})
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        role = request.POST.get("role", "user")  # assume form has role selection
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already registered.")
+            return redirect("register")
+
+        # Admins are active immediately, users need OTP
+        if role == "admin":
+            user = User.objects.create_user(
+                username=username, email=email, password=password,
+                role="admin", is_active=True, email_verified=True
+            )
+            messages.success(request, "✅ Admin account created. You can log in now.")
+            return redirect("login")
+        else:
+            user = User.objects.create_user(
+                username=username, email=email, password=password,
+                role="user", is_active=False
+            )
+            otp = user.generate_otp()
+
+            send_mail(
+                subject="Verify your Tennis Court account",
+                message=f"Your verification OTP is {otp}. It is valid for 10 minutes.",
+                from_email="no-reply@tenniscourt.com",
+                recipient_list=[email],
+            )
+
+            messages.success(request, "✅ OTP sent to your email. Please verify.")
+            request.session["pending_user"] = user.id
+            return redirect("verify_otp")
+
+    return render(request, "register.html")
+
+# core/views.py
+from datetime import timedelta
+
+from django.utils import timezone
+from datetime import timedelta
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+def verify_otp_view(request):
+    user_id = request.session.get("pending_user")
+    if not user_id:
+        return redirect("register")
+
+    user = get_object_or_404(User, id=user_id)
+
+    if request.method == "POST":
+        otp_entered = request.POST.get("otp")
+
+        if otp_entered == user.otp:
+            # ✅ Check expiry (10 minutes)
+            if timezone.now() > user.otp_created_at + timedelta(minutes=10):
+                messages.error(request, "❌ OTP expired. Please request a new one.")
+                return redirect("resend_otp")  # make sure you add this view & url
+
+            # ✅ Mark email as verified
+            user.email_verified = True
+            user.is_active = True
+            user.otp = None
+            user.otp_created_at = None
+            user.save()
+
+            # ✅ Remove pending session
+            if "pending_user" in request.session:
+                del request.session["pending_user"]
+
+            messages.success(request, "🎉 Email verified successfully! You can now log in.")
+            return redirect("core:login")
+        else:
+            messages.error(request, "❌ Invalid OTP. Please try again.")
+
+    return render(request, "verify_otp.html")
 
 
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
+
+
+
+
+def resend_otp(request):
+    user_id = request.session.get("pending_user")
+    if not user_id:
+        return redirect("register")
+
+    user = User.objects.get(id=user_id)
+    otp = user.generate_otp()
+
+    send_mail(
+        subject="Resend Verification OTP",
+        message=f"Your new verification OTP is {otp}. It is valid for 10 minutes.",
+        from_email="no-reply@tenniscourt.com",
+        recipient_list=[user.email],
+    )
+
+    messages.success(request, "📩 New OTP sent to your email.")
+    return redirect("verify_otp")
 
 
 
