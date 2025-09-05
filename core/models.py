@@ -1,4 +1,4 @@
-
+import string
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -40,7 +40,7 @@ class User(AbstractUser):
 
     def generate_otp(self):
         """Generate a 6-digit OTP and save it with timestamp"""
-        otp = str(random.randint(100000, 999999))  # 6-digit random number
+        otp = str(random.randint(string.digits, k=6))  # 6-digit random number
         self.otp = otp
         self.otp_created_at = timezone.now()
         self.save()

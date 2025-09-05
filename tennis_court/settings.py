@@ -98,20 +98,24 @@ WSGI_APPLICATION = 'tennis_court.wsgi.application'
 
 import dj_database_url
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv("postgresql://tennis_court_db_443h_user:cTMywXQz08wso5UsU5IWjMfSWFGKbhkw@dpg-d2sk3h63jp1c73atm8qg-a.oregon-postgres.render.com/tennis_court_db_443h"),  # Render’s external DB URL
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.getenv("postgresql://tennis_court_db_443h_user:cTMywXQz08wso5UsU5IWjMfSWFGKbhkw@dpg-d2sk3h63jp1c73atm8qg-a.oregon-postgres.render.com/tennis_court_db_443h"),  # Render’s external DB URL
+#         conn_max_age=600,
+#         ssl_require=True
+#     )
+# }
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.sqlite3",
 #         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
-
+DATABASES = {
+    "default": dj_database_url.config(
+        default="sqlite:///db.sqlite3"  # fallback to SQLite locally
+    )
+}
 
 
 # Password validation
