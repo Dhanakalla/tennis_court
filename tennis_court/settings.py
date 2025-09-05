@@ -25,9 +25,12 @@ SECRET_KEY = 'django-insecure-pte8)=dztx=0oynw76f)^w9g%6ft*9fxmogubi1rej7j==*d4l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# import os
+# ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+# ALLOWED_HOSTS = ["tennis-court-6.onrender.com", "localhost", "127.0.0.1"]
 
 
-# ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
 
 # ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
@@ -93,21 +96,21 @@ WSGI_APPLICATION = 'tennis_court.wsgi.application'
 # }
 
 
-# import dj_database_url
-#
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=os.getenv("postgresql://tennis_court_db_443h_user:cTMywXQz08wso5UsU5IWjMfSWFGKbhkw@dpg-d2sk3h63jp1c73atm8qg-a.oregon-postgres.render.com/tennis_court_db_443h"),  # Render’s external DB URL
-#         conn_max_age=600,
-#         ssl_require=True
-#     )
-# }
+import dj_database_url
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    'default': dj_database_url.config(
+        default=os.getenv("postgresql://tennis_court_db_443h_user:cTMywXQz08wso5UsU5IWjMfSWFGKbhkw@dpg-d2sk3h63jp1c73atm8qg-a.oregon-postgres.render.com/tennis_court_db_443h"),  # Render’s external DB URL
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 
 
